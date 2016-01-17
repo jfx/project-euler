@@ -9,7 +9,8 @@
         "fabpot/php-cs-fixer": "*",
         "squizlabs/php_codesniffer": "2.*",
         "escapestudios/symfony2-coding-standard": "~2.0",
-        "phpmd/phpmd" : "*"
+        "phpmd/phpmd" : "*",
+        "phpunit/phpunit": "5.1.*"
     },
     "autoload": {
         "psr-0": {

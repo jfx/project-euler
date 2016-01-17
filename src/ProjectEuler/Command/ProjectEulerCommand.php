@@ -74,15 +74,15 @@ class ProjectEulerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pb = new \ProjectEuler\Problem\N001\Problem();
-        
+
         $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
         $output->writeln('<comment>'.$pb->getDescription().'</comment>');
         $output->writeln('');
-        
+
         $start = microtime(true);
         $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
         $end = microtime(true);
-        
+
         $time = round($end - $start, 3);
         $output->writeln('Time: '.$time.' s');
     }

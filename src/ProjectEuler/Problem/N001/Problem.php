@@ -20,7 +20,7 @@
 namespace ProjectEuler\Problem\N001;
 
 /**
- * Project Euler problem.
+ * Project Euler problem class.
  *
  * @category  Project Euler in PHP
  *
@@ -34,19 +34,19 @@ namespace ProjectEuler\Problem\N001;
 class Problem
 {
     protected $jsonData;
-    
+
     /**
-     * Default constructor
+     * Default constructor.
      */
     public function __construct()
     {
         $file = file_get_contents(__DIR__.'/problem.json');
         $this->jsonData = json_decode($file);
     }
-    
+
     /**
      * Return id of the problem.
-     * 
+     *
      * @return string Id of the problem
      */
     public function getId()
@@ -56,31 +56,50 @@ class Problem
 
     /**
      * Return title of the problem.
-     * 
+     *
      * @return string Title of the problem
      */
     public function getTitle()
     {
         return $this->jsonData->title;
     }
-    
+
     /**
      * Return description of the problem.
-     * 
+     *
      * @return string Description of the problem
      */
     public function getDescription()
     {
         return $this->jsonData->description;
     }
-    
+
+    /**
+     * Resolve the problem.
+     *
+     * @param int $max Maximum
+     *
+     * @return int Sum of the multiples of 3 and 5
+     */
+    public function resolve($max)
+    {
+        $sum = 0;
+        for ($i = 1; $i < $max; ++$i) {
+            if ((($i % 3) == 0) || (($i % 5) == 0)) {
+                $sum += $i;
+            }
+        }
+
+        return $sum;
+    }
+
     /**
      * Return solution of the problem.
-     * 
+     *
      * @return string Solution of the problem
      */
     public function getSolution()
     {
-        return '233168';
+        return ''.$this->resolve(1000);
     }
 }
