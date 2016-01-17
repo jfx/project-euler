@@ -33,15 +33,16 @@ namespace ProjectEuler\Problem\N001;
  */
 class Problem
 {
-    protected $id = '001';
-
-    protected $title = 'Multiples of 3 and 5';
-
-    protected $description = <<<EOT
-If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
-
-Find the sum of all the multiples of 3 or 5 below 1000.    
-EOT;
+    protected $jsonData;
+    
+    /**
+     * Default constructor
+     */
+    public function __construct()
+    {
+        $file = file_get_contents(__DIR__.'/problem.json');
+        $this->jsonData = json_decode($file);
+    }
     
     /**
      * Return id of the problem.
@@ -50,7 +51,7 @@ EOT;
      */
     public function getId()
     {
-        return $this->id;
+        return $this->jsonData->id;
     }
 
     /**
@@ -60,7 +61,7 @@ EOT;
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->jsonData->title;
     }
     
     /**
@@ -70,7 +71,7 @@ EOT;
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->jsonData->description;
     }
     
     /**
