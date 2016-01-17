@@ -1,0 +1,64 @@
+<project name="pe" default="build">
+    
+    <property environment="env"/>
+    <property name="workspace" value="${env.WORKSPACE}"/>
+    <property name="build.number" value="${env.BUILD_NUMBER}"/>
+
+    <property name="projectdir" value="."/>
+    <property name="src" value="${projectdir}/src"/>
+    <property name="vendor.bin" value="${projectdir}/vendor/bin"/>
+
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${workspace}/build/logs"/>
+    </target>
+    <target name="prepare" depends="clean" description="Prepare for build">
+        <mkdir dir="${workspace}/build/logs"/>
+    </target>
+        
+    <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd"/>
+    <target name="phpcsfixer">
+        <exec executable="${vendor.bin}/php-cs-fixer" dir="${projectdir}">
+            <arg value="fix"/>
+            <arg value="-v"/>
+            <arg value="--config=sf23"/>
+            <arg value="${projectdir}"/>
+        </exec>
+    </target>
+    <target name="lint">
+        <apply executable="php" failonerror="true" dir="${projectdir}">
+            <arg value="-l"/>
+            <fileset dir="${src}">
+                <include name="**/*.php"/>
+                <modified/>
+            </fileset>
+        </apply>
+    </target>
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
+        <exec executable="${vendor.bin}/phpcs" dir="${projectdir}">
+            <arg value="-v"/>
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${workspace}/build/logs/checkstyle.xml"/>
+            <arg value="--standard=${projectdir}/Standards/ruleset-cs.xml"/>
+            <arg value="--extensions=php"/>
+            <arg path="${src}"/>
+        </exec>
+    </target>
+    <target name="phpmd" description="Generate PHP Mess Detector report">
+        <exec executable="${vendor.bin}/phpmd" dir="${projectdir}">
+            <arg value="${src}"/>
+            <arg value="xml"/>
+            <arg value="${projectdir}/Standards/ruleset-pmd.xml"/>
+            <arg value="--reportfile"/>
+            <arg value="${workspace}/build/logs/pmd.xml"/>
+        </exec>
+    </target>
+    <target name="phpunit">
+        <exec executable="${vendor.bin}/phpunit" failonerror="true" dir="${projectdir}">
+            <arg value="-c"/>
+            <arg value="${projectdir}"/>
+            <arg value="--log-junit"/>
+            <arg value="${workspace}/build/logs/junit.xml"/>
+        </exec>
+    </target>
+      
+</project>
