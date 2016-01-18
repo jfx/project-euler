@@ -73,7 +73,15 @@ class ProjectEulerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pb = new \ProjectEuler\Problem\N001\Problem();
+        $num = $input->getArgument('num');
+        if (strlen($num) == 1) {
+            $num = '00'.$num;
+        } elseif (strlen($num) == 2) {
+            $num = '0'.$num;
+        }
+        
+        $className = '\ProjectEuler\Problem\N'.$num.'\Problem';
+        $pb = new $className;
 
         $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
         $output->writeln('<comment>'.$pb->getDescription().'</comment>');

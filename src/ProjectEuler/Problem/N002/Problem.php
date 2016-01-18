@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N001;
+namespace ProjectEuler\Problem\N002;
 
 use ProjectEuler\Problem\AbstractProblem;
 
@@ -44,11 +44,18 @@ class Problem extends AbstractProblem
      */
     public function resolve($max)
     {
-        $sum = 0;
-        for ($i = 1; $i < $max; ++$i) {
-            if ((($i % 3) == 0) || (($i % 5) == 0)) {
-                $sum += $i;
+        $a = 1;
+        $b = 2;
+        $c = $a + $b;
+        $sum = 2;
+        
+        while ($c <= $max) {
+            if (($c % 2) == 0) {
+                $sum += $c;
             }
+            $a = $b;
+            $b = $c;
+            $c = $a + $b;
         }
 
         return $sum;
@@ -61,6 +68,6 @@ class Problem extends AbstractProblem
      */
     public function getSolution()
     {
-        return $this->resolve(1000);
+        return ''.$this->resolve(4000000);
     }
 }

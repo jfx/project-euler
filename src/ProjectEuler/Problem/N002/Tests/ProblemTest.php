@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LICENSE : This file is part of Project Euler in PHP.
+ * LICENSE : This file is part of My Agile Product.
  *
  * My Agile Product is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N001;
+namespace ProjectEuler\Problem\N002\Tests;
 
-use ProjectEuler\Problem\AbstractProblem;
+use ProjectEuler\Problem\N002\Problem;
 
 /**
- * Project Euler problem class.
+ * Test Project Euler problem class.
  *
  * @category  Project Euler in PHP
  *
@@ -33,34 +33,45 @@ use ProjectEuler\Problem\AbstractProblem;
  * @link      https://projecteuler.net/
  * @since     1
  */
-class Problem extends AbstractProblem
+class ProblemTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Resolve the problem.
-     *
-     * @param int $max Maximum
-     *
-     * @return int Result
+     * Test method.
      */
-    public function resolve($max)
+    public function testGetId()
     {
-        $sum = 0;
-        for ($i = 1; $i < $max; ++$i) {
-            if ((($i % 3) == 0) || (($i % 5) == 0)) {
-                $sum += $i;
-            }
-        }
+        $pb = new Problem();
 
-        return $sum;
+        $this->assertEquals('002', $pb->getId());
     }
 
     /**
-     * Return solution of the problem.
-     *
-     * @return string Solution of the problem
+     * Test method.
      */
-    public function getSolution()
+    public function testResolveFor10()
     {
-        return $this->resolve(1000);
+        $pb = new Problem();
+
+        $this->assertEquals(10, $pb->resolve(10));
+    }
+
+    /**
+     * Test method.
+     */
+    public function testResolveFor100()
+    {
+        $pb = new Problem();
+
+        $this->assertEquals(44, $pb->resolve(100));
+    }
+    
+    /**
+     * Test method.
+     */
+    public function testGetSolution()
+    {
+        $pb = new Problem();
+
+        $this->assertEquals(4613732, $pb->getSolution());
     }
 }

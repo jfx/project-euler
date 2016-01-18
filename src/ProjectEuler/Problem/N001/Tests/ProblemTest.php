@@ -58,10 +58,10 @@ class ProblemTest extends \PHPUnit_Framework_TestCase
     /**
      * Test method.
      */
-    public function testResolveFor1000()
+    public function testGetSolution()
     {
         $pb = new Problem();
 
-        $this->assertEquals(233168, $pb->resolve(1000));
+        $this->assertEquals(233168, $pb->getSolution());
     }
 }
