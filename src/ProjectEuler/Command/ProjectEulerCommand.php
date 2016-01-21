@@ -79,9 +79,9 @@ class ProjectEulerCommand extends Command
         } elseif (strlen($num) == 2) {
             $num = '0'.$num;
         }
-        
+
         $className = '\ProjectEuler\Problem\N'.$num.'\Problem';
-        $pb = new $className;
+        $pb = new $className();
 
         $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
         $output->writeln('<comment>'.$pb->getDescription().'</comment>');

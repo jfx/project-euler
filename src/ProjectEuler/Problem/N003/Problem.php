@@ -17,12 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem;
+namespace ProjectEuler\Problem\N003;
 
-use ReflectionClass;
+use ProjectEuler\Problem\AbstractProblem;
+use ProjectEuler\Util\Prime;
 
 /**
- * Project Euler problem abstract class.
+ * Project Euler problem class.
  *
  * @category  Project Euler in PHP
  *
@@ -33,49 +34,21 @@ use ReflectionClass;
  * @link      https://projecteuler.net/
  * @since     1
  */
-abstract class AbstractProblem
+class Problem extends AbstractProblem
 {
-    protected $jsonData;
-
     /**
-     * Default constructor.
-     */
-    public function __construct()
-    {
-        $classInfo = new ReflectionClass($this);
-        $dir = dirname($classInfo->getFileName());
-        $file = file_get_contents($dir.'/problem.json');
-        $this->jsonData = json_decode($file);
-    }
-
-    /**
-     * Return id of the problem.
+     * Resolve the problem.
      *
-     * @return string Id of the problem
-     */
-    public function getId()
-    {
-        return $this->jsonData->id;
-    }
-
-    /**
-     * Return title of the problem.
+     * @param int $integer Integer
      *
-     * @return string Title of the problem
+     * @return int Result
      */
-    public function getTitle()
+    public function resolve($integer)
     {
-        return $this->jsonData->title;
-    }
+        $prime = new Prime();
+        $primesFactor = $prime->getPrimesFactor($integer);
 
-    /**
-     * Return description of the problem.
-     *
-     * @return string Description of the problem
-     */
-    public function getDescription()
-    {
-        return $this->jsonData->description;
+        return max($primesFactor);
     }
 
     /**
@@ -83,5 +56,8 @@ abstract class AbstractProblem
      *
      * @return string Solution of the problem
      */
-    abstract public function getSolution();
+    public function getSolution()
+    {
+        return ''.$this->resolve(600851475143);
+    }
 }

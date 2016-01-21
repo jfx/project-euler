@@ -48,7 +48,7 @@ class Problem extends AbstractProblem
         $b = 2;
         $c = $a + $b;
         $sum = 2;
-        
+
         while ($c <= $max) {
             if (($c % 2) == 0) {
                 $sum += $c;

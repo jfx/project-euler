@@ -8,6 +8,7 @@
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>src/ProjectEuler/Problem/*/Tests</directory>
+            <directory>src/ProjectEuler/Util/Tests</directory>
         </testsuite>
     </testsuites>
 
