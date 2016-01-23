@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N003\Tests;
+namespace ProjectEuler\Problem\N004\Tests;
 
-use ProjectEuler\Problem\N003\Problem;
+use ProjectEuler\Problem\N004\Problem;
 
 /**
  * Test Project Euler problem class.
@@ -42,27 +42,17 @@ class ProblemTest extends \PHPUnit_Framework_TestCase
     {
         $pb = new Problem();
 
-        $this->assertEquals('003', $pb->getId());
+        $this->assertEquals('004', $pb->getId());
     }
 
     /**
      * Test method.
      */
-    public function testResolveFor10()
+    public function testResolve2digit()
     {
         $pb = new Problem();
 
-        $this->assertEquals(5, $pb->resolve(10));
-    }
-
-    /**
-     * Test method.
-     */
-    public function testResolveFor13195()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(29, $pb->resolve(13195));
+        $this->assertEquals(9009, $pb->resolve2digit());
     }
 
     /**
@@ -72,6 +62,6 @@ class ProblemTest extends \PHPUnit_Framework_TestCase
     {
         $pb = new Problem();
 
-        $this->assertEquals(6857, $pb->getSolution());
+        $this->assertEquals(906609, $pb->getSolution());
     }
 }

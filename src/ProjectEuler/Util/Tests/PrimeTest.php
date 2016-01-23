@@ -47,7 +47,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesList(30)
         );
     }
-    
+
     /**
      * Test method.
      */
@@ -60,7 +60,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(1)
         );
     }
-    
+
     /**
      * Test method.
      */
@@ -86,7 +86,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(3)
         );
     }
-    
+
     /**
      * Test method.
      */
@@ -99,7 +99,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(10)
         );
     }
-    
+
     /**
      * Test method.
      */
@@ -112,7 +112,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(12)
         );
     }
-    
+
     /**
      * Test method.
      */
@@ -139,7 +139,7 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(13195)
         );
     }
-    
+
     /**
      * Test method.
      */

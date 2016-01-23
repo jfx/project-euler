@@ -34,7 +34,7 @@ namespace ProjectEuler\Util;
 class Prime
 {
     private $defaultLimit = 100;
-    
+
     /**
      * Get list of primes from 2 to limit.
      *
@@ -86,26 +86,25 @@ class Prime
         $limit = min(array($integer + 2, $this->defaultLimit));
         $primes = $this->getPrimesList($limit);
 
-        $primesFactor = array();        
+        $primesFactor = array();
         $primeIndex = 0;
         $lastFactor = $integer;
-                
+
         while ($primes[$primeIndex] <= $lastFactor) {
-            
             while (($lastFactor % $primes[$primeIndex]) == 0) {
                 $lastFactor = $lastFactor / $primes[$primeIndex];
                 $primesFactor[] = $primes[$primeIndex];
             }
-            $primeIndex++;
+            ++$primeIndex;
             if (!array_key_exists($primeIndex, $primes)) {
                 $limit = 10 * $limit;
                 $primes = $this->getPrimesList($limit);
             }
-        }        
-            
-        return $primesFactor;   
+        }
+
+        return $primesFactor;
     }
-    
+
     /**
      * Set default limit.
      *
