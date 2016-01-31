@@ -106,6 +106,34 @@ class Prime
     }
 
     /**
+     * Get Xst primes.
+     *
+     * @param int $occurence The occurence.
+     *
+     * @return int The prime number
+     */
+    public function getOccurencePrime($occurence)
+    {
+        $notFound = true;
+        $evaluatePrimeLimit = $occurence;
+
+        while ($notFound) {
+            $evaluatePrimeLimit = floor(
+                $evaluatePrimeLimit * log($evaluatePrimeLimit) * 1.2
+            ) + 2;
+
+            $primesList = $this->getPrimesList($evaluatePrimeLimit);
+
+            if ($occurence <= count($primesList)) {
+                $prime = $primesList[$occurence - 1];
+                $notFound = false;
+            }
+        }
+
+        return $prime;
+    }
+
+    /**
      * Set default limit.
      *
      * @param int $limit The limit.

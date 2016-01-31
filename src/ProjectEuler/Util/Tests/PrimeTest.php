@@ -153,4 +153,34 @@ class PrimeTest extends \PHPUnit_Framework_TestCase
             $prime->getPrimesFactor(13195)
         );
     }
+
+    /**
+     * Test method.
+     */
+    public function testOccurencePrime1()
+    {
+        $prime = new Prime();
+
+        $this->assertEquals(2, $prime->getOccurencePrime(1));
+    }
+
+    /**
+     * Test method.
+     */
+    public function testOccurencePrime6()
+    {
+        $prime = new Prime();
+
+        $this->assertEquals(13, $prime->getOccurencePrime(6));
+    }
+
+    /**
+     * Test method.
+     */
+    public function testOccurencePrime10001()
+    {
+        $prime = new Prime();
+
+        $this->assertEquals(104743, $prime->getOccurencePrime(10001));
+    }
 }
