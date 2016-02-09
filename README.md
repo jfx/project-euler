@@ -20,7 +20,6 @@ Usage:
 ./bin/pe resolve <num problem>
 ```
 
-Example :
 ![Project Euler resolution command line](/web/images/project-euler-php-resolve.png?raw=true "Resolution of Project Euler problem #1")
 
 To run unit tests :
@@ -28,5 +27,4 @@ To run unit tests :
 ./vendor/bin/phpunit -c phpunit.xml
 ```
 
-Example :
 ![Project Euler unit tests](/web/images/project-euler-php-test.png?raw=true "Run Unit tests suite")
