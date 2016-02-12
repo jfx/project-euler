@@ -4,7 +4,7 @@ Project Euler in PHP
 Solutions for [Project Euler](https://projecteuler.net) problems  
 
 Installation from source :
-- Prerequisite : PHP >= 5.5 and git  must be installed,
+- Prerequisite : PHP >= 5.5 and git  must be installed
 ```
 # Clone repository
 git clone https://github.com/jfx/project-euler.git
@@ -13,6 +13,12 @@ cd project-euler
 php -r "readfile('https://getcomposer.org/installer');" | php
 # Install libraries
 php composer.phar install --prefer-dist
+```
+
+Installation with [Docker](https://www.docker.com/) :
+- Prerequisite : Docker  must be installed
+```
+sudo docker run -a stdin -a stdout -it jfxs/project-euler /bin/bash
 ```
 
 Usage:
