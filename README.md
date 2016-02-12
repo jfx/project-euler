@@ -20,11 +20,11 @@ Usage:
 ./bin/pe resolve <num problem>
 ```
 
-![Project Euler resolution command line](/web/images/project-euler-php-resolve.png?raw=true "Resolution of Project Euler problem #1")
+![Project Euler resolution command line](https://raw.githubusercontent.com/jfx/project-euler/master/web/images/project-euler-php-resolve.png "Resolution of Project Euler problem #1")
 
 To run unit tests :
 ```
 ./vendor/bin/phpunit -c phpunit.xml
 ```
 
-![Project Euler unit tests](/web/images/project-euler-php-test.png?raw=true "Run Unit tests suite")
+![Project Euler unit tests](https://raw.githubusercontent.com/jfx/project-euler/master/web/images/project-euler-php-test.png "Run unit tests suite")

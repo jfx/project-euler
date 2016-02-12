@@ -15,7 +15,8 @@
         <mkdir dir="${workspace}/build/logs"/>
     </target>
         
-    <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd,phpunit"/>
+    <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd"/>
+    <target name="ut" depends="phpunit"/>
     <target name="phpcsfixer">
         <exec executable="${vendor.bin}/php-cs-fixer" dir="${projectdir}">
             <arg value="fix"/>
