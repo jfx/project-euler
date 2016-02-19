@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$DIR/../vendor/bin/phpunit -c $DIR/../phpunit.xml --log-junit /tmp/junit.xml \
+> /tmp/phpunit.log 2>&1

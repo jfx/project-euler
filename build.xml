@@ -6,7 +6,11 @@
 
     <property name="projectdir" value="."/>
     <property name="src" value="${projectdir}/src"/>
+    <property name="bin" value="${projectdir}/bin"/>
     <property name="vendor.bin" value="${projectdir}/vendor/bin"/>
+    <property name="docker.name" value="jfxs/project-euler"/>
+    <property name="docker.tag" value="latest"/>
+    <property name="docker.projectdir" value="/app"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${workspace}/build/logs"/>
@@ -16,7 +20,10 @@
     </target>
         
     <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd"/>
-    <target name="ut" depends="phpunit"/>
+    <target name="unittest" depends="prepare,phpunit"/>
+    <target name="docker" depends="prepare,docker.clean,docker.build,docker.phpunit"/>
+    <target name="dockerunittest" depends="prepare,docker.phpunit"/>
+    
     <target name="phpcsfixer">
         <exec executable="${vendor.bin}/php-cs-fixer" dir="${projectdir}">
             <arg value="fix"/>
@@ -53,6 +60,7 @@
             <arg value="${workspace}/build/logs/pmd.xml"/>
         </exec>
     </target>
+
     <target name="phpunit">
         <exec executable="${vendor.bin}/phpunit" failonerror="true" dir="${projectdir}">
             <arg value="-c"/>
@@ -61,5 +69,50 @@
             <arg value="${workspace}/build/logs/junit.xml"/>
         </exec>
     </target>
-      
+       
+    <target name="docker.clean">
+        <exec executable="docker" dir="${projectdir}">
+            <arg value="rm"/>
+            <arg value="-f"/>
+            <arg value="$(docker ps -a -f IMAGE=${docker.name} -q)"/>
+        </exec>
+        <exec executable="docker" dir="${projectdir}">
+            <arg value="rmi"/>
+            <arg value="${docker.name}:${docker.tag}"/>
+        </exec>
+    </target>     
+    <target name="docker.build">
+        <exec executable="docker" failonerror="true" dir="${projectdir}">
+            <arg value="build"/>
+            <arg value="-t"/>
+            <arg value="${docker.name}:${docker.tag}"/>
+            <arg value="-f"/>
+            <arg value="./Dockerfile-Github-Oauth"/>
+            <arg value="--build-arg"/>
+            <arg value="GITHUB_OAUTH=${GITHUB_TOKEN}"/>
+            <arg value="."/>
+        </exec>
+    </target>
+    
+    <target name="docker.phpunit">
+        <exec executable="docker" failonerror="false">
+            <arg value="rm"/>
+            <arg value="phpunit"/>
+        </exec>
+        <exec executable="docker" failonerror="true">
+            <arg value="run"/>
+            <arg value="--name"/>
+            <arg value="phpunit"/>
+            <arg value="-d"/>
+            <arg value="${docker.name}"/>
+            <arg value="${docker.projectdir}/bin/runUnitTests"/>
+        </exec>
+        <sleep seconds="1"/>
+        <exec executable="docker" failonerror="true">
+            <arg value="cp" />
+            <arg value="phpunit:/tmp/junit.xml" />
+            <arg value="${workspace}/build/logs/junit.xml" />
+        </exec>
+    </target>
+    
 </project>

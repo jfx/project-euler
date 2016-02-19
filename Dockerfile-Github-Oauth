@@ -1,0 +1,22 @@
+############################################################
+# Dockerfile to build Project Euler container image
+# Based on official php image.
+############################################################
+
+FROM php:5-fpm
+
+MAINTAINER Francois-Xavier Soubirou
+
+RUN apt-get update && \ 
+    apt-get install -y zlib1g-dev && \
+    docker-php-ext-install zip
+
+COPY . /app
+
+WORKDIR /app
+
+ARG GITHUB_OAUTH=""
+
+RUN php -r "readfile('https://getcomposer.org/installer');" | php && \
+    COMPOSER_AUTH="{\"github-oauth\": {\"github.com\": \"${GITHUB_OAUTH}\"}}" \
+    php composer.phar install --prefer-dist
