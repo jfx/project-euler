@@ -1,0 +1,7 @@
+*** Settings ***
+Library           OperatingSystem
+Library           Process
+Resource          PARAMETERS.txt
+Resource          Util.txt
+
+*** Keywords ***

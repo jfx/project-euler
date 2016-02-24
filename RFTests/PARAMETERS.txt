@@ -1,0 +1,5 @@
+*** Variables ***
+${PE_DIR}         ${CURDIR}/..
+${WAIT_DOCKER_FLUSH}    1
+${IMAGE_NAME}     jfxs/project-euler
+${CONTAINER_NAME}    rf

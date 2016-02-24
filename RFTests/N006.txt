@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Variables ***
+${id}             6
+${title}          Smallest multiple
+@{description}    The sum of the squares of the first ten natural numbers is,        Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+${result}         25164150
+
+*** Test Cases ***
+Successful resolution with local CLI
+    [Tags]    local
+    I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with docker CLI
+    [Tags]    docker
+    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}

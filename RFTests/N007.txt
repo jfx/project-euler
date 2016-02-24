@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Variables ***
+${id}             7
+${title}          10001st prime
+@{description}    By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.    What is the 10 001st prime number ?
+${result}         104743
+
+*** Test Cases ***
+Successful resolution with local CLI
+    [Tags]    local
+    I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with docker CLI
+    [Tags]    docker
+    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}

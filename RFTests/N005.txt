@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Variables ***
+${id}             5
+${title}          Smallest multiple
+@{description}    2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.    What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20 ?
+${result}         232792560
+
+*** Test Cases ***
+Successful resolution with local CLI
+    [Tags]    local
+    I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with docker CLI
+    [Tags]    docker
+    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}

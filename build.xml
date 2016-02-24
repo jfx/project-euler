@@ -7,20 +7,24 @@
     <property name="projectdir" value="."/>
     <property name="src" value="${projectdir}/src"/>
     <property name="bin" value="${projectdir}/bin"/>
+    <property name="testdir" value="${projectdir}/RFTests"/>
     <property name="vendor.bin" value="${projectdir}/vendor/bin"/>
     <property name="docker.name" value="jfxs/project-euler"/>
     <property name="docker.tag" value="latest"/>
     <property name="docker.projectdir" value="/app"/>
 
     <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${workspace}/build/robot"/>
         <delete dir="${workspace}/build/logs"/>
     </target>
     <target name="prepare" depends="clean" description="Prepare for build">
+        <mkdir dir="${workspace}/build/robot"/>
         <mkdir dir="${workspace}/build/logs"/>
     </target>
         
     <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd"/>
     <target name="unittest" depends="prepare,phpunit"/>
+    <target name="qatest" depends="prepare,rftest"/>
     <target name="docker" depends="prepare,docker.clean,docker.build,docker.phpunit"/>
     <target name="dockerunittest" depends="prepare,docker.phpunit"/>
     
@@ -69,6 +73,26 @@
             <arg value="${workspace}/build/logs/junit.xml"/>
         </exec>
     </target>
+
+    <target name="rftest" description="Robot Framework tests">
+        <tstamp>
+            <format property="time.start" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.start} - Starting tests..."/>
+        <exec executable="pybot">
+            <arg value="-i"/>
+            <arg value="${property.tag}"/>
+            <arg value="--outputdir"/>
+            <arg value="${workspace}/build/robot"/>
+            <arg value="--xunit"/>
+            <arg value="${workspace}/build/logs/junit.xml"/>
+            <arg value="${testdir}"/>
+        </exec>
+        <tstamp>
+            <format property="time.end" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.end} - Ending tests."/>
+    </target>    
        
     <target name="docker.clean">
         <exec executable="docker" dir="${projectdir}">
@@ -76,6 +100,7 @@
             <arg value="-f"/>
             <arg value="$(docker ps -a -f IMAGE=${docker.name} -q)"/>
         </exec>
+        <sleep seconds="1"/>
         <exec executable="docker" dir="${projectdir}">
             <arg value="rmi"/>
             <arg value="${docker.name}:${docker.tag}"/>
@@ -114,5 +139,28 @@
             <arg value="${workspace}/build/logs/junit.xml" />
         </exec>
     </target>
-    
+
+    <target name="docker.rftest" description="Robot Framework tests">
+        <tstamp>
+            <format property="time.start" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.start} - Starting tests..."/>
+        <exec executable="pybot">
+            <arg value="-v"/>
+            <arg value="ENV:prod"/>
+            <arg value="-v"/>
+            <arg value="URL:http://map3dev.localhost"/>
+            <arg value="-v"/>
+            <arg value="BROWSER:chrome"/>
+            <arg value="-v"/>
+            <arg value="HUB:http://127.0.0.1:4444/wd/hub"/>
+            <arg value="--outputdir"/>
+            <arg value="${workspace}/build/robot"/>
+            <arg value="${testdir}"/>
+        </exec>
+        <tstamp>
+            <format property="time.end" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.end} - Ending tests."/>
+    </target>    
 </project>

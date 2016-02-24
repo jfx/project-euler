@@ -1,0 +1,43 @@
+*** Keywords ***
+I check in local the resolve CLI command
+    [Arguments]    ${id}    ${title}    ${result}    @{description}
+    ${output} =    When I run local CLI command to resolve problem #    ${id}
+    Then the title on stdout should be    ${output}    ${title}
+    Then the description on stdout should be    ${output}    @{description}
+    Then the result on stdout should be    ${output}    ${result}
+
+I check on docker the resolve CLI command
+    [Arguments]    ${id}    ${title}    ${result}    @{description}
+    ${output} =    I run docker CLI command to resolve problem #    ${id}
+    Then the title on stdout should be    ${output}    ${title}
+    Then the description on stdout should be    ${output}    @{description}
+    Then the result on stdout should be    ${output}    ${result}
+
+I run local CLI command to resolve problem #
+    [Arguments]    ${num}
+    ${output} =    Run Process    ${PE_DIR}/bin/pe    resolve    ${num}
+    Should Be Equal As Integers    ${output.rc}    0
+    [Return]    ${output}
+
+I run docker CLI command to resolve problem #
+    [Arguments]    ${num}
+    ${output} =    Run Process    docker     rm    ${CONTAINER_NAME}
+    ${output} =    Run Process    docker     run    --name    ${CONTAINER_NAME}    -d
+    ...    ${IMAGE_NAME}    /app/bin/pe    resolve    ${num}
+    Should Be Equal As Integers    ${output.rc}    0
+    Sleep    ${WAIT_DOCKER_FLUSH}
+    ${output} =    Run Process    docker     logs    ${CONTAINER_NAME}
+    Should Be Equal As Integers    ${output.rc}    0
+    [Return]    ${output}
+
+The title on stdout should be
+    [Arguments]    ${output}    ${title}
+    Should Contain    ${output.stdout}    ${title}
+
+The description on stdout should be
+    [Arguments]    ${output}    @{description}
+    Should Contain    ${output.stdout}    @{description}
+
+The result on stdout should be
+    [Arguments]    ${output}    ${result}
+    Should Contain    ${output.stdout}    ${result}

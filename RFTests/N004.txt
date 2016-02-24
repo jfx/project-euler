@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Variables ***
+${id}             4
+${title}          Largest palindrome product
+@{description}    A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.    Find the largest palindrome made from the product of two 3-digit numbers.
+${result}         906609
+
+*** Test Cases ***
+Successful resolution with local CLI
+    [Tags]    local
+    I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with docker CLI
+    [Tags]    docker
+    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}

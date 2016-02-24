@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Variables ***
+${id}             3
+${title}          Largest prime factor
+@{description}    The prime factors of 13195 are 5, 7, 13 and 29.    What is the largest prime factor of the number 600851475143 ?
+${result}         6857
+
+*** Test Cases ***
+Successful resolution with local CLI
+    [Tags]    local
+    I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with docker CLI
+    [Tags]    docker
+    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}
