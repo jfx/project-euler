@@ -19,6 +19,7 @@
 
 namespace ProjectEuler\Command;
 
+use ProjectEuler\Problem\ProblemFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,24 +75,16 @@ class ProjectEulerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $num = $input->getArgument('num');
-        if (strlen($num) == 1) {
-            $num = '00'.$num;
-        } elseif (strlen($num) == 2) {
-            $num = '0'.$num;
-        }
 
-        $className = '\ProjectEuler\Problem\N'.$num.'\Problem';
-        $pb = new $className();
+        $pb = ProblemFactory::get($num);
 
         $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
         $output->writeln('<comment>'.$pb->getDescription().'</comment>');
         $output->writeln('');
 
-        $start = microtime(true);
         $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
-        $end = microtime(true);
 
-        $time = round($end - $start, 3);
+        $time = $pb->getRoundTime();
         $output->writeln('Time: '.$time.' s');
     }
 }

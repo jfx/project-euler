@@ -17,10 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N003\Tests;
+namespace ProjectEuler\Problem\Tests;
 
-use ProjectEuler\Problem\N003\Problem;
-use ProjectEuler\Problem\Tests\AbstractProblemTest;
+// use ProjectEuler\Problem\N001\Problem;
 
 /**
  * Test Project Euler problem class.
@@ -34,55 +33,32 @@ use ProjectEuler\Problem\Tests\AbstractProblemTest;
  * @link      https://projecteuler.net/
  * @since     1
  */
-class ProblemTest extends AbstractProblemTest
+abstract class AbstractProblemTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Get the problem to test.
      *
      * @return Problem The problem
      */
-    public function getProblem()
+    abstract protected function getProblem();
+
+    /**
+     * Test method.
+     */
+    public function testGetTime()
     {
-        return new Problem();
+        $pb = $this->getProblem();
+
+        $this->assertGreaterThanOrEqual(0, $pb->getTime());
     }
 
     /**
      * Test method.
      */
-    public function testGetId()
+    public function testGetRoundTime()
     {
-        $pb = new Problem();
+        $pb = $this->getProblem();
 
-        $this->assertEquals('003', $pb->getId());
-    }
-
-    /**
-     * Test method.
-     */
-    public function testResolveFor10()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(5, $pb->resolve(10));
-    }
-
-    /**
-     * Test method.
-     */
-    public function testResolveFor13195()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(29, $pb->resolve(13195));
-    }
-
-    /**
-     * Test method.
-     */
-    public function testGetSolution()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(6857, $pb->getSolution());
+        $this->assertGreaterThanOrEqual(0, $pb->getRoundTime());
     }
 }

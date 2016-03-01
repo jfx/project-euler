@@ -20,6 +20,7 @@
 namespace ProjectEuler\Problem\N001\Tests;
 
 use ProjectEuler\Problem\N001\Problem;
+use ProjectEuler\Problem\Tests\AbstractProblemTest;
 
 /**
  * Test Project Euler problem class.
@@ -33,8 +34,18 @@ use ProjectEuler\Problem\N001\Problem;
  * @link      https://projecteuler.net/
  * @since     1
  */
-class ProblemTest extends \PHPUnit_Framework_TestCase
+class ProblemTest extends AbstractProblemTest
 {
+    /**
+     * Get the problem to test.
+     *
+     * @return Problem The problem
+     */
+    public function getProblem()
+    {
+        return new Problem();
+    }
+
     /**
      * Test method.
      */
@@ -61,7 +72,9 @@ class ProblemTest extends \PHPUnit_Framework_TestCase
     public function testGetSolution()
     {
         $pb = new Problem();
+        $solution = $pb->getSolution();
 
-        $this->assertEquals(233168, $pb->getSolution());
+        $this->assertInternalType('string', $solution);
+        $this->assertEquals(233168, $solution);
     }
 }

@@ -3,15 +3,21 @@ I check in local the resolve CLI command
     [Arguments]    ${id}    ${title}    ${result}    @{description}
     ${output} =    When I run local CLI command to resolve problem #    ${id}
     Then the title on stdout should be    ${output}    ${title}
-    Then the description on stdout should be    ${output}    @{description}
-    Then the result on stdout should be    ${output}    ${result}
+    And the description on stdout should be    ${output}    @{description}
+    And the result on stdout should be    ${output}    ${result}
 
 I check on docker the resolve CLI command
     [Arguments]    ${id}    ${title}    ${result}    @{description}
-    ${output} =    I run docker CLI command to resolve problem #    ${id}
+    ${output} =    When I run docker CLI command to resolve problem #    ${id}
     Then the title on stdout should be    ${output}    ${title}
-    Then the description on stdout should be    ${output}    @{description}
-    Then the result on stdout should be    ${output}    ${result}
+    And the description on stdout should be    ${output}    @{description}
+    And the result on stdout should be    ${output}    ${result}
+
+I check in local the resolve API request
+    [Arguments]    ${id}    ${title}    ${result}    @{description}
+    When I start built-in PHP server
+    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ${id}
+    Then the answer of the API resolve operation should be    ${resp}    ${title}    ${result}    @{description}
 
 I run local CLI command to resolve problem #
     [Arguments]    ${num}
@@ -21,12 +27,12 @@ I run local CLI command to resolve problem #
 
 I run docker CLI command to resolve problem #
     [Arguments]    ${num}
-    ${output} =    Run Process    docker     rm    ${CONTAINER_NAME}
-    ${output} =    Run Process    docker     run    --name    ${CONTAINER_NAME}    -d
+    ${output} =    Run Process    docker    rm    ${CONTAINER_NAME}
+    ${output} =    Run Process    docker    run    --name    ${CONTAINER_NAME}    -d
     ...    ${IMAGE_NAME}    /app/bin/pe    resolve    ${num}
     Should Be Equal As Integers    ${output.rc}    0
     Sleep    ${WAIT_DOCKER_FLUSH}
-    ${output} =    Run Process    docker     logs    ${CONTAINER_NAME}
+    ${output} =    Run Process    docker    logs    ${CONTAINER_NAME}
     Should Be Equal As Integers    ${output.rc}    0
     [Return]    ${output}
 
@@ -41,3 +47,27 @@ The description on stdout should be
 The result on stdout should be
     [Arguments]    ${output}    ${result}
     Should Contain    ${output.stdout}    ${result}
+
+I start built-in PHP server
+    ${handle} =    Start Process    php -S localhost:${BUILTIN_SERVER_PORT} -t ${PE_DIR}/web    cwd=${PE_DIR}    shell=True
+    Process Should Be Running    handle=${handle}
+    sleep    ${WAIT_BUILTIN_SERVER_START}
+
+I request the API resolve operation
+    [Arguments]    ${url}    ${id}
+    Create Session    pe    http://localhost:${BUILTIN_SERVER_PORT}
+    ${resp}=    Get Request    pe    /resolve/${id}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    [Return]    ${resp}
+
+The answer of the API resolve operation should be
+    [Arguments]    ${resp}    ${title}    ${result}    @{description}
+    Dictionary Should Contain Key    ${resp.json()}    id
+    Dictionary Should Contain Key    ${resp.json()}    title
+    Dictionary Should Contain Value    ${resp.json()}    ${title}
+    Log    ${resp.json()}
+    Dictionary Should Contain Key    ${resp.json()}    description
+    Dictionary Should Contain Key    ${resp.json()}    solution
+    Dictionary Should Contain Value    ${resp.json()}    ${result}
+    Dictionary Should Contain Key    ${resp.json()}    time
+    Dictionary Should Contain Key    ${resp.json()}    roundTime

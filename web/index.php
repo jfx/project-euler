@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LICENSE : This file is part of My Agile Product.
+ * LICENSE : This file is part of Project Euler in PHP.
  *
  * My Agile Product is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N007\Tests;
+require_once '../vendor/autoload.php';
 
-use ProjectEuler\Problem\N007\Problem;
-use ProjectEuler\Problem\Tests\AbstractProblemTest;
+use ProjectEuler\Problem\ProblemFactory;
+use Silex\Application;
 
 /**
- * Test Project Euler problem class.
+ * Project Euler command class.
  *
  * @category  Project Euler in PHP
  *
@@ -34,45 +34,20 @@ use ProjectEuler\Problem\Tests\AbstractProblemTest;
  * @link      https://projecteuler.net/
  * @since     1
  */
-class ProblemTest extends AbstractProblemTest
-{
-    /**
-     * Get the problem to test.
-     *
-     * @return Problem The problem
-     */
-    public function getProblem()
-    {
-        return new Problem();
-    }
 
-    /**
-     * Test method.
-     */
-    public function testGetId()
-    {
-        $pb = new Problem();
+$app = new Application();
 
-        $this->assertEquals('007', $pb->getId());
-    }
+// define route for /resolve/{id}
+$app->get('/resolve/{id}', function ($id) {
+        
+    $pb = ProblemFactory::get($id);   
+    return $pb->toJson();
+})->assert('id', '\d+');
 
-    /**
-     * Test method.
-     */
-    public function testResolve6()
-    {
-        $pb = new Problem();
+// default route
+$app->get('/', function () {
+  return "List of available methods:
+  - /resolve/{id} - Resolution for Project Euler problem id";
+});
 
-        $this->assertEquals(13, $pb->resolve(6));
-    }
-
-    /**
-     * Test method.
-     */
-    public function testGetSolution()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(104743, $pb->getSolution());
-    }
-}
+$app->run();

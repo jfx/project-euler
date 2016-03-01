@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LICENSE : This file is part of My Agile Product.
+ * LICENSE : This file is part of Project Euler in PHP.
  *
  * My Agile Product is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ProjectEuler\Problem\N007\Tests;
-
-use ProjectEuler\Problem\N007\Problem;
-use ProjectEuler\Problem\Tests\AbstractProblemTest;
+namespace ProjectEuler\Problem;
 
 /**
- * Test Project Euler problem class.
+ * Project Euler problem abstract class.
  *
  * @category  Project Euler in PHP
  *
@@ -34,45 +31,26 @@ use ProjectEuler\Problem\Tests\AbstractProblemTest;
  * @link      https://projecteuler.net/
  * @since     1
  */
-class ProblemTest extends AbstractProblemTest
+class ProblemFactory
 {
     /**
-     * Get the problem to test.
+     * Get the Problem object by its id.
      *
-     * @return Problem The problem
+     * @param int $num $id of the problem
+     *
+     * @return Problem
      */
-    public function getProblem()
+    public static function get($num)
     {
-        return new Problem();
-    }
+        if (strlen($num) == 1) {
+            $num = '00'.$num;
+        } elseif (strlen($num) == 2) {
+            $num = '0'.$num;
+        }
 
-    /**
-     * Test method.
-     */
-    public function testGetId()
-    {
-        $pb = new Problem();
+        $className = '\ProjectEuler\Problem\N'.$num.'\Problem';
+        $pb = new $className();
 
-        $this->assertEquals('007', $pb->getId());
-    }
-
-    /**
-     * Test method.
-     */
-    public function testResolve6()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(13, $pb->resolve(6));
-    }
-
-    /**
-     * Test method.
-     */
-    public function testGetSolution()
-    {
-        $pb = new Problem();
-
-        $this->assertEquals(104743, $pb->getSolution());
+        return $pb;
     }
 }

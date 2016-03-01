@@ -37,6 +37,8 @@ abstract class AbstractProblem
 {
     protected $jsonData;
 
+    protected $time = 0;
+
     /**
      * Default constructor.
      */
@@ -83,5 +85,61 @@ abstract class AbstractProblem
      *
      * @return string Solution of the problem
      */
-    abstract public function getSolution();
+    public function getSolution()
+    {
+        $start = microtime(true);
+
+        $solution = $this->resolution();
+
+        $end = microtime(true);
+        $this->time = $end - $start;
+
+        return $solution;
+    }
+
+    /**
+     * Return the time to resolve the problem rounded to 3 digits.
+     *
+     * @return int Time in second
+     */
+    public function getRoundTime()
+    {
+        return round($this->time, 3);
+    }
+
+    /**
+     * Return the time to resolve the problem.
+     *
+     * @return int Time in second
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * Return the json representation of the problem.
+     *
+     * @return string The json string
+     */
+    public function toJson()
+    {
+        $array = array(
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'solution' => $this->getSolution(),
+            'time' => $this->getTime(),
+            'roundTime' => $this->getRoundTime(),
+        );
+
+        return json_encode($array);
+    }
+
+    /**
+     * Resolve the problem.
+     *
+     * @return string Solution of the problem
+     */
+    abstract protected function resolution();
 }

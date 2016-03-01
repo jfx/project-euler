@@ -66,7 +66,7 @@ class Problem extends AbstractProblem
      *
      * @return string Solution of the problem
      */
-    public function getSolution()
+    public function resolution()
     {
         return ''.$this->resolve(4000000);
     }

@@ -1,6 +1,8 @@
 *** Settings ***
 Library           OperatingSystem
 Library           Process
+Library           Collections
+Library           RequestsLibrary
 Resource          PARAMETERS.txt
 Resource          Util.txt
 
