@@ -15,3 +15,8 @@ Successful resolution with local CLI
 Successful resolution with docker CLI
     [Tags]    docker
     I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+
+Successful resolution with local API
+    [Tags]    local    API
+    I check in local the resolve API request    ${id}    ${title}    ${result}    @{description}
+    [Teardown]    Terminate All Processes

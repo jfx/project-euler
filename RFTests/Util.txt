@@ -16,7 +16,7 @@ I check on docker the resolve CLI command
 I check in local the resolve API request
     [Arguments]    ${id}    ${title}    ${result}    @{description}
     When I start built-in PHP server
-    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ${id}
+    ${resp}=    And I request successfully the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ${id}
     Then the answer of the API resolve operation should be    ${resp}    ${title}    ${result}    @{description}
 
 I run local CLI command to resolve problem #
@@ -53,11 +53,16 @@ I start built-in PHP server
     Process Should Be Running    handle=${handle}
     sleep    ${WAIT_BUILTIN_SERVER_START}
 
+I request successfully the API resolve operation
+    [Arguments]    ${url}    ${id}
+    ${resp}=    I request the API resolve operation    ${url}    ${id}
+    Should Be Equal As Strings    ${resp.status_code}    200
+    [Return]    ${resp}
+
 I request the API resolve operation
     [Arguments]    ${url}    ${id}
-    Create Session    pe    http://localhost:${BUILTIN_SERVER_PORT}
+    Create Session    pe    ${url}
     ${resp}=    Get Request    pe    /resolve/${id}
-    Should Be Equal As Strings    ${resp.status_code}    200
     [Return]    ${resp}
 
 The answer of the API resolve operation should be
@@ -65,7 +70,6 @@ The answer of the API resolve operation should be
     Dictionary Should Contain Key    ${resp.json()}    id
     Dictionary Should Contain Key    ${resp.json()}    title
     Dictionary Should Contain Value    ${resp.json()}    ${title}
-    Log    ${resp.json()}
     Dictionary Should Contain Key    ${resp.json()}    description
     Dictionary Should Contain Key    ${resp.json()}    solution
     Dictionary Should Contain Value    ${resp.json()}    ${result}

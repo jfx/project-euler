@@ -49,7 +49,12 @@ class ProblemFactory
         }
 
         $className = '\ProjectEuler\Problem\N'.$num.'\Problem';
-        $pb = new $className();
+
+        if (class_exists($className)) {
+            $pb = new $className();
+        } else {
+            $pb = false;
+        }
 
         return $pb;
     }

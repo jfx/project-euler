@@ -21,6 +21,7 @@ require_once '../vendor/autoload.php';
 
 use ProjectEuler\Problem\ProblemFactory;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Project Euler command class.
@@ -40,8 +41,14 @@ $app = new Application();
 // define route for /resolve/{id}
 $app->get('/resolve/{id}', function ($id) {
         
-    $pb = ProblemFactory::get($id);   
-    return $pb->toJson();
+    $pb = ProblemFactory::get($id); 
+    
+    if ($pb) {
+        return $pb->toJson();
+    } else {
+        return new Response("Problem #{$id} not found.", 404);
+    }
+    
 })->assert('id', '\d+');
 
 // default route

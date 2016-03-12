@@ -1,0 +1,52 @@
+*** Settings ***
+Resource          Libraries_Resources.txt
+
+*** Test Cases ***
+Non numerical id argument for local CLI
+    [Tags]    local    CLI
+    ${output} =    When I run local CLI command to resolve problem #    ZZZZ
+    Then the title on stdout should be    ${output}    Error : problem #ZZZZ not found !
+    [Teardown]    Terminate All Processes
+
+Wrong id argument for local CLI
+    [Tags]    local    CLI
+    ${output} =    When I run local CLI command to resolve problem #    9999
+    Then the title on stdout should be    ${output}    Error : problem #9999 not found !
+    [Teardown]    Terminate All Processes
+
+Short command for local CLI
+    [Tags]    local    CLI
+    ${output} =    When Run Process    ${PE_DIR}/bin/pe    r    1
+    Then Should Be Equal As Integers    ${output.rc}    0
+    And the title on stdout should be    ${output}    Multiples of 3 and 5
+    [Teardown]    Terminate All Processes
+
+Wrong command for local CLI
+    [Tags]    local    CLI
+    ${output} =    When Run Process    ${PE_DIR}/bin/pe    wrongCommand    1
+    Then Should Be Equal As Integers    ${output.rc}    1
+    And Should Contain    ${output.stderr}    Command "wrongCommand" is not defined.
+    [Teardown]    Terminate All Processes
+
+Non numerical id parameter for local API
+    [Tags]    local    API
+    When I start built-in PHP server
+    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ZZZZ
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    [Teardown]    Terminate All Processes
+
+Wrong id parameter for local API
+    [Tags]    local    API
+    When I start built-in PHP server
+    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    9999
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Should Contain    ${resp.content}    Problem #9999 not found
+    [Teardown]    Terminate All Processes
+
+Wrong URL for local API
+    [Tags]    local    API
+    Given I start built-in PHP server
+    When Create Session    pe    http://localhost:${BUILTIN_SERVER_PORT}
+    ${resp}=    And Get Request    pe    /wrongUrl/1
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    [Teardown]    Terminate All Processes

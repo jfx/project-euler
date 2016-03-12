@@ -78,13 +78,19 @@ class ProjectEulerCommand extends Command
 
         $pb = ProblemFactory::get($num);
 
-        $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
-        $output->writeln('<comment>'.$pb->getDescription().'</comment>');
-        $output->writeln('');
+        if ($pb) {
+            $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
+            $output->writeln('<comment>'.$pb->getDescription().'</comment>');
+            $output->writeln('');
 
-        $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
+            $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
 
-        $time = $pb->getRoundTime();
-        $output->writeln('Time: '.$time.' s');
+            $time = $pb->getRoundTime();
+            $output->writeln('Time: '.$time.' s');
+        } else {
+            $output->writeln('');
+            $output->writeln('<error>Error : problem #'.$num.' not found !</error>');
+            $output->writeln('');
+        }
     }
 }

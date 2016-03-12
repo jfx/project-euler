@@ -40,7 +40,7 @@ abstract class AbstractProblemTest extends \PHPUnit_Framework_TestCase
      *
      * @return Problem The problem
      */
-    abstract protected function getProblem();
+    abstract public function getProblem();
 
     /**
      * Test method.
