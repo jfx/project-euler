@@ -14,7 +14,7 @@ sudo docker run -a stdin -a stdout -it jfxs/project-euler /bin/bash
 
 Installation from source :
 --------------------------
-- Prerequisite : PHP >= 5.5 and git  must be installed
+- Prerequisite : PHP >= 7.0 and git  must be installed
 ```
 # Clone repository
 git clone https://github.com/jfx/project-euler.git

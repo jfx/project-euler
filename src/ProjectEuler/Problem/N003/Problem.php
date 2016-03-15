@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Problem\N003;
 
@@ -43,7 +44,7 @@ class Problem extends AbstractProblem
      *
      * @return int Result
      */
-    public function resolve($integer)
+    public function resolve(int $integer): int
     {
         $prime = new Prime();
         $primesFactor = $prime->getPrimesFactor($integer);
@@ -56,7 +57,7 @@ class Problem extends AbstractProblem
      *
      * @return string Solution of the problem
      */
-    public function resolution()
+    protected function resolution(): string
     {
         return ''.$this->resolve(600851475143);
     }

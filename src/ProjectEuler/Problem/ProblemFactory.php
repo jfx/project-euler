@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Problem;
 
@@ -40,11 +41,11 @@ class ProblemFactory
      *
      * @return Problem
      */
-    public static function get($num)
+    public static function get(int $num): AbstractProblem
     {
-        if (strlen($num) == 1) {
+        if (strlen((string) $num) == 1) {
             $num = '00'.$num;
-        } elseif (strlen($num) == 2) {
+        } elseif (strlen((string) $num) == 2) {
             $num = '0'.$num;
         }
 
@@ -53,7 +54,7 @@ class ProblemFactory
         if (class_exists($className)) {
             $pb = new $className();
         } else {
-            $pb = false;
+            throw new ProblemFactoryException();
         }
 
         return $pb;

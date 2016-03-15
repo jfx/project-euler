@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Util;
 
@@ -42,7 +43,7 @@ class Prime
      *
      * @return array List of primes
      */
-    public function getPrimesList($limit)
+    public function getPrimesList(int $limit): array
     {
         $arrayLimit = $limit - 1;
         $integers = array_fill(2, $arrayLimit, true);
@@ -81,7 +82,7 @@ class Prime
      *
      * @return array List of primes factor
      */
-    public function getPrimesFactor($integer)
+    public function getPrimesFactor(int $integer): array
     {
         $limit = min(array($integer + 2, $this->defaultLimit));
         $primes = $this->getPrimesList($limit);
@@ -112,7 +113,7 @@ class Prime
      *
      * @return int The prime number
      */
-    public function getOccurencePrime($occurence)
+    public function getOccurencePrime(int $occurence): int
     {
         $notFound = true;
         $evaluatePrimeLimit = $occurence;
@@ -122,7 +123,7 @@ class Prime
                 $evaluatePrimeLimit * log($evaluatePrimeLimit) * 1.2
             ) + 2;
 
-            $primesList = $this->getPrimesList($evaluatePrimeLimit);
+            $primesList = $this->getPrimesList(intval($evaluatePrimeLimit));
 
             if ($occurence <= count($primesList)) {
                 $prime = $primesList[$occurence - 1];
@@ -138,7 +139,7 @@ class Prime
      *
      * @param int $limit The limit.
      */
-    public function setDefaultLimit($limit)
+    public function setDefaultLimit(int $limit)
     {
         $this->defaultLimit = $limit;
     }

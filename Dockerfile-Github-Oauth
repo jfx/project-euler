@@ -3,7 +3,7 @@
 # Based on official php image.
 ############################################################
 
-FROM php:5-fpm
+FROM php:fpm
 
 MAINTAINER Francois-Xavier Soubirou
 

@@ -17,9 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+declare(strict_types=1);
+
 require_once '../vendor/autoload.php';
 
 use ProjectEuler\Problem\ProblemFactory;
+use ProjectEuler\Problem\ProblemFactoryException;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,13 +44,13 @@ $app = new Application();
 // define route for /resolve/{id}
 $app->get('/resolve/{id}', function ($id) {
         
-    $pb = ProblemFactory::get($id); 
-    
-    if ($pb) {
-        return $pb->toJson();
-    } else {
-        return new Response("Problem #{$id} not found.", 404);
+    try {
+    	$pb = ProblemFactory::get(intval($id));
     }
+    catch (ProblemFactoryException $e) {
+    	return new Response("Problem #{$id} not found.", 404);
+    }
+    return $pb->toJson();
     
 })->assert('id', '\d+');
 

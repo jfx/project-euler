@@ -16,10 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Command;
 
 use ProjectEuler\Problem\ProblemFactory;
+use ProjectEuler\Problem\ProblemFactoryException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,21 +78,25 @@ class ProjectEulerCommand extends Command
     {
         $num = $input->getArgument('num');
 
-        $pb = ProblemFactory::get($num);
-
-        if ($pb) {
-            $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
-            $output->writeln('<comment>'.$pb->getDescription().'</comment>');
+        try {
+            $pb = ProblemFactory::get(intval($num));
+        } catch (ProblemFactoryException $e) {
+            $output->writeln('');
+            $output->writeln(
+                '<error>Error : problem #'.$num.' not found !</error>'
+            );
             $output->writeln('');
 
-            $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
-
-            $time = $pb->getRoundTime();
-            $output->writeln('Time: '.$time.' s');
-        } else {
-            $output->writeln('');
-            $output->writeln('<error>Error : problem #'.$num.' not found !</error>');
-            $output->writeln('');
+            return;
         }
+
+        $output->writeln('Problem #'.$pb->getId().': '.$pb->getTitle());
+        $output->writeln('<comment>'.$pb->getDescription().'</comment>');
+        $output->writeln('');
+
+        $output->writeln('<info>Result: '.$pb->getSolution().'</info>');
+
+        $time = $pb->getRoundTime();
+        $output->writeln('Time: '.$time.' s');
     }
 }

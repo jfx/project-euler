@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Problem\N001;
 
@@ -42,7 +43,7 @@ class Problem extends AbstractProblem
      *
      * @return int Result
      */
-    public function resolve($max)
+    public function resolve(int $max): int
     {
         $sum = 0;
         for ($i = 1; $i < $max; ++$i) {
@@ -59,7 +60,7 @@ class Problem extends AbstractProblem
      *
      * @return string Solution of the problem
      */
-    public function resolution()
+    protected function resolution(): string
     {
         return ''.$this->resolve(1000);
     }

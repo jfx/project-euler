@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Problem;
 
@@ -55,9 +56,9 @@ abstract class AbstractProblem
      *
      * @return string Id of the problem
      */
-    public function getId()
+    public function getId(): int
     {
-        return $this->jsonData->id;
+        return intval($this->jsonData->id);
     }
 
     /**
@@ -65,7 +66,7 @@ abstract class AbstractProblem
      *
      * @return string Title of the problem
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->jsonData->title;
     }
@@ -75,7 +76,7 @@ abstract class AbstractProblem
      *
      * @return string Description of the problem
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->jsonData->description;
     }
@@ -85,7 +86,7 @@ abstract class AbstractProblem
      *
      * @return string Solution of the problem
      */
-    public function getSolution()
+    public function getSolution(): string
     {
         $start = microtime(true);
 
@@ -100,9 +101,9 @@ abstract class AbstractProblem
     /**
      * Return the time to resolve the problem rounded to 3 digits.
      *
-     * @return int Time in second
+     * @return float Time in second
      */
-    public function getRoundTime()
+    public function getRoundTime(): float
     {
         return round($this->time, 3);
     }
@@ -110,9 +111,9 @@ abstract class AbstractProblem
     /**
      * Return the time to resolve the problem.
      *
-     * @return int Time in second
+     * @return float Time in second
      */
-    public function getTime()
+    public function getTime(): float
     {
         return $this->time;
     }
@@ -122,7 +123,7 @@ abstract class AbstractProblem
      *
      * @return string The json string
      */
-    public function toJson()
+    public function toJson(): string
     {
         $array = array(
             'id' => $this->getId(),
@@ -141,5 +142,5 @@ abstract class AbstractProblem
      *
      * @return string Solution of the problem
      */
-    abstract protected function resolution();
+    abstract protected function resolution(): string;
 }

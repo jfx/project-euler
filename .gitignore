@@ -1,4 +1,7 @@
 /vendor/
-/nbproject/
 /composer.phar
 cache.properties
+/nbproject/
+.buildpath
+.project
+.settings/

@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+declare (strict_types = 1);
 
 namespace ProjectEuler\Problem\N004;
 
@@ -40,7 +41,7 @@ class Problem extends AbstractProblem
      *
      * @return int Result
      */
-    public function resolve2digit()
+    public function resolve2digit(): int
     {
         $notFound = true;
         $palidrome2d = 0;
@@ -81,7 +82,7 @@ class Problem extends AbstractProblem
      *
      * @return int Result
      */
-    public function resolve3digit()
+    public function resolve3digit(): int
     {
         $notFound = true;
         $palidrome3d = 0;
@@ -127,7 +128,7 @@ class Problem extends AbstractProblem
      *
      * @return string Solution of the problem
      */
-    public function resolution()
+    protected function resolution(): string
     {
         return ''.$this->resolve3digit();
     }
