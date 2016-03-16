@@ -22,12 +22,22 @@
         <mkdir dir="${workspace}/build/logs"/>
     </target>
         
-    <target name="check" depends="prepare,phpcsfixer,lint,phpcs,phpmd"/>
+    <target name="check" depends="prepare,update,phpcsfixer,lint,phpcs,phpmd"/>
     <target name="unittest" depends="prepare,phpunit"/>
     <target name="qatest" depends="prepare,rftest"/>
     <target name="docker" depends="prepare,docker.clean,docker.build,docker.phpunit"/>
     <target name="dockerunittest" depends="prepare,docker.phpunit"/>
-    
+
+    <target name="update">
+        <exec executable="php" dir="${projectdir}">
+            <arg value="composer.phar"/>
+            <arg value="self-update"/>
+        </exec>
+        <exec executable="php" dir="${projectdir}">
+            <arg value="composer.phar"/>
+            <arg value="update"/>
+        </exec>
+    </target>    
     <target name="phpcsfixer">
         <exec executable="${vendor.bin}/php-cs-fixer" dir="${projectdir}">
             <arg value="fix"/>

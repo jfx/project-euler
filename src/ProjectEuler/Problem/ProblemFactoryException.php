@@ -23,7 +23,7 @@ namespace ProjectEuler\Problem;
 use Exception;
 
 /**
- * Problem factory class.
+ * Problem factory exception class.
  *
  * @category  Project Euler in PHP
  *

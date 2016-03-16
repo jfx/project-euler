@@ -21,7 +21,7 @@ declare (strict_types = 1);
 namespace ProjectEuler\Problem;
 
 /**
- * Project Euler problem abstract class.
+ * Problem factory class.
  *
  * @category  Project Euler in PHP
  *
