@@ -28,17 +28,28 @@ Wrong command for local CLI
     And Should Contain    ${output.stderr}    Command "wrongCommand" is not defined.
     [Teardown]    Terminate All Processes
 
+Non numerical id argument for docker CLI
+    [Tags]    CLI    docker
+    ${output} =    When I run docker CLI command to resolve problem #    ZZZZ
+    Then the title on stdout should be    ${output}    Error : problem #ZZZZ not found !
+
+Wrong id argument for docker CLI
+    [Tags]    CLI    docker
+    ${output} =    When I run docker CLI command to resolve problem #    9999
+    Then the title on stdout should be    ${output}    Error : problem #9999 not found !
+    [Teardown]    Terminate All Processes
+
 Non numerical id parameter for local API
     [Tags]    local    API
-    When I start built-in PHP server
-    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ZZZZ
+    Given I start built-in PHP server
+    ${resp}=    When I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ZZZZ
     Then Should Be Equal As Strings    ${resp.status_code}    404
     [Teardown]    Terminate All Processes
 
 Wrong id parameter for local API
     [Tags]    local    API
-    When I start built-in PHP server
-    ${resp}=    And I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    9999
+    Given I start built-in PHP server
+    ${resp}=    When I request the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    9999
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Should Contain    ${resp.content}    Problem #9999 not found
     [Teardown]    Terminate All Processes
@@ -47,6 +58,26 @@ Wrong URL for local API
     [Tags]    local    API
     Given I start built-in PHP server
     When Create Session    pe    http://localhost:${BUILTIN_SERVER_PORT}
+    ${resp}=    And Get Request    pe    /wrongUrl/1
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    [Teardown]    Terminate All Processes
+
+Non numerical id parameter for docker API
+    [Tags]    docker    API
+    ${resp}=    When I request the API resolve operation    http://localhost:${DOCKER_API_PORT}    ZZZZ
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    [Teardown]    Terminate All Processes
+
+Wrong id parameter for docker API
+    [Tags]    docker    API
+    ${resp}=    When I request the API resolve operation    http://localhost:${DOCKER_API_PORT}    9999
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Should Contain    ${resp.content}    Problem #9999 not found
+    [Teardown]    Terminate All Processes
+
+Wrong URL for docker API
+    [Tags]    docker    API
+    When Create Session    pe    http://localhost:${DOCKER_API_PORT}
     ${resp}=    And Get Request    pe    /wrongUrl/1
     Then Should Be Equal As Strings    ${resp.status_code}    404
     [Teardown]    Terminate All Processes

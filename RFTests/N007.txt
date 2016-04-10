@@ -8,15 +8,20 @@ ${title}          10001st prime
 ${result}         104743
 
 *** Test Cases ***
-Successful resolution with local CLI
-    [Tags]    local
+Successful CLI resolution in local
+    [Tags]    local    CLI
     I check in local the resolve CLI command    ${id}    ${title}    ${result}    @{description}
 
-Successful resolution with docker CLI
-    [Tags]    docker
-    I check on docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}
+Successful CLI resolution with docker
+    [Tags]    docker    CLI
+    I check with docker the resolve CLI command    ${id}    ${title}    ${result}    @{description}
 
-Successful resolution with local API
+Successful API resolution in local
     [Tags]    local    API
-    I check in local the resolve API request    ${id}    ${title}    ${result}    @{description}
+    [Setup]    I start built-in PHP server
+    I check the resolve API request    localhost:${BUILTIN_SERVER_PORT}    ${id}    ${title}    ${result}    @{description}
     [Teardown]    Terminate All Processes
+
+Successful API resolution with docker
+    [Tags]    API    docker
+    I check the resolve API request    localhost:${DOCKER_API_PORT}    ${id}    ${title}    ${result}    @{description}

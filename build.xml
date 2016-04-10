@@ -9,7 +9,7 @@
     <property name="bin" value="${projectdir}/bin"/>
     <property name="testdir" value="${projectdir}/RFTests"/>
     <property name="vendor.bin" value="${projectdir}/vendor/bin"/>
-    <property name="docker.name" value="jfxs/project-euler"/>
+    <property name="docker.pe.name" value="jfxs/project-euler"/>
     <property name="docker.tag" value="latest"/>
     <property name="docker.projectdir" value="/app"/>
 
@@ -25,8 +25,9 @@
     <target name="check" depends="prepare,update,phpcsfixer,lint,phpcs,phpmd"/>
     <target name="unittest" depends="prepare,phpunit"/>
     <target name="qatest" depends="prepare,rftest"/>
-    <target name="docker" depends="prepare,docker.clean,docker.build,docker.phpunit"/>
+    <target name="docker" depends="prepare,docker.clean,docker.build"/>
     <target name="dockerunittest" depends="prepare,docker.phpunit"/>
+    <target name="dockerqatest" depends="prepare,compose.start,rftest,compose.stop"/>
 
     <target name="update">
         <exec executable="php" dir="${projectdir}">
@@ -107,19 +108,26 @@
     <target name="docker.clean">
         <exec executable="/bin/sh">
             <arg value="-c" />
-            <arg value="docker rm -f $(docker ps -a -f IMAGE=${docker.name} -q)"/>
+            <arg value="docker rm -f $(docker ps -a -f IMAGE=${docker.pe.name} -q)"/>
         </exec>
         <sleep seconds="1"/>
         <exec executable="docker" dir="${projectdir}">
             <arg value="rmi"/>
-            <arg value="${docker.name}:${docker.tag}"/>
+            <arg value="${docker.pe.name}:${docker.tag}"/>
         </exec>
-    </target>     
+        <exec executable="docker-compose" dir="${projectdir}">
+            <arg value="down"/>
+            <arg value="--rmi"/>
+            <arg value="local"/>
+        </exec>
+    </target>
+      
     <target name="docker.build">
         <exec executable="docker" failonerror="true" dir="${projectdir}">
             <arg value="build"/>
+            <arg value="--pull"/>
             <arg value="-t"/>
-            <arg value="${docker.name}:${docker.tag}"/>
+            <arg value="${docker.pe.name}:${docker.tag}"/>
             <arg value="-f"/>
             <arg value="./Dockerfile-Github-Oauth"/>
             <arg value="--build-arg"/>
@@ -138,7 +146,7 @@
             <arg value="--name"/>
             <arg value="phpunit"/>
             <arg value="-d"/>
-            <arg value="${docker.name}"/>
+            <arg value="${docker.pe.name}"/>
             <arg value="${docker.projectdir}/bin/runUnitTests"/>
         </exec>
         <sleep seconds="1"/>
@@ -146,6 +154,34 @@
             <arg value="cp" />
             <arg value="phpunit:/tmp/junit.xml" />
             <arg value="${workspace}/build/logs/junit.xml" />
+        </exec>
+    </target>
+    
+    <target name="compose.start">
+        <tstamp>
+            <format property="time.start" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.start} - Starting compose build..."/>
+        <exec executable="docker-compose" dir="${projectdir}" failonerror="true">
+            <arg value="build"/>
+            <arg value="--pull"/>
+        </exec>
+        <exec executable="docker-compose" dir="${projectdir}" failonerror="true">
+            <arg value="up"/>
+            <arg value="-d"/>
+        </exec>
+        <waitfor maxwait="3" maxwaitunit="minute">
+            <http url="http://localhost:5001/resolve/1"/>
+        </waitfor>
+        <tstamp>
+            <format property="time.end" pattern="yyyy-MM-dd HH:mm z"/>
+        </tstamp>
+        <echo message="Time : ${time.end} - Ending compose build."/>
+    </target>
+    
+    <target name="compose.stop">
+        <exec executable="docker-compose" dir="${projectdir}" failonerror="false">
+            <arg value="down"/>
         </exec>
     </target>
 </project>

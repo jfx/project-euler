@@ -6,17 +6,16 @@ I check in local the resolve CLI command
     And the description on stdout should be    ${output}    @{description}
     And the result on stdout should be    ${output}    ${result}
 
-I check on docker the resolve CLI command
+I check with docker the resolve CLI command
     [Arguments]    ${id}    ${title}    ${result}    @{description}
     ${output} =    When I run docker CLI command to resolve problem #    ${id}
     Then the title on stdout should be    ${output}    ${title}
     And the description on stdout should be    ${output}    @{description}
     And the result on stdout should be    ${output}    ${result}
 
-I check in local the resolve API request
-    [Arguments]    ${id}    ${title}    ${result}    @{description}
-    When I start built-in PHP server
-    ${resp}=    And I request successfully the API resolve operation    http://localhost:${BUILTIN_SERVER_PORT}    ${id}
+I check the resolve API request
+    [Arguments]    ${url}    ${id}    ${title}    ${result}    @{description}
+    ${resp}=    When I request successfully the API resolve operation    http://${url}    ${id}
     Then the answer of the API resolve operation should be    ${resp}    ${title}    ${result}    @{description}
 
 I run local CLI command to resolve problem #
