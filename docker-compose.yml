@@ -12,7 +12,7 @@ services:
          context: .
          dockerfile: Dockerfile-Github-Oauth
          args:
-            GITHUB_OAUTH: 3c19ddcbed76b70c4d17d670a134bc3f99bbd524
+            GITHUB_OAUTH: ${GITHUB_OAUTH}
       volumes:
          - ./web:/app/web
         

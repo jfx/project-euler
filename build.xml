@@ -163,6 +163,7 @@
         </tstamp>
         <echo message="Time : ${time.start} - Starting compose build..."/>
         <exec executable="docker-compose" dir="${projectdir}" failonerror="true">
+            <env key="GITHUB_OAUTH" value="${GITHUB_TOKEN}"/>
             <arg value="build"/>
             <arg value="--pull"/>
         </exec>
