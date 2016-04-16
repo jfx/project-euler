@@ -29,6 +29,17 @@
     <target name="dockerunittest" depends="prepare,docker.phpunit"/>
     <target name="dockerqatest" depends="prepare,compose.start,rftest,compose.stop"/>
 
+    <target name="install">
+        <exec executable="/bin/bash" dir="${projectdir}">
+            <arg value="bin/installComposer"/>
+        </exec>
+        <exec executable="php" dir="${projectdir}">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+        </exec>
+    </target>
+
     <target name="update">
         <exec executable="php" dir="${projectdir}">
             <arg value="composer.phar"/>
